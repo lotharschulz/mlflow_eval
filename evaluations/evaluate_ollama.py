@@ -12,7 +12,6 @@ mlflow_tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
 print(f"Using MLflow Tracking URI: {mlflow_tracking_uri}")
 
 # Ollama base URL (for Ollama server)
-#ollama_base_url = "http://localhost:11434"
 ollama_base_url = os.getenv("OLLAMA_BASE_URI", "http://localhost:11434")
 print(f"Using Ollama Base URL: {ollama_base_url}")
 
