@@ -15,12 +15,14 @@ docker-compose config
 
 docker-compose logs -f mlflow
 
-stop the docker setup: docker-compose down -v # removes all volumes that store data
+stop the docker setup: docker-compose down -v # # The -v flag removes volumes storing data
 
 cd ../../
 
 export MLFLOW_TRACKING_URI="http://localhost:5000"
 echo $MLFLOW_TRACKING_URI
+export OLLAMA_BASE_URI="http://localhost:11434"
+echo $OLLAMA_BASE_URI
 
 mkdir evaluations
 cd evaluations/

@@ -2,12 +2,19 @@ import mlflow
 import pandas as pd
 from langchain_ollama import OllamaLLM
 from difflib import SequenceMatcher
+import os
 
 # Set experiment
 mlflow.set_experiment("Ollama Model Evaluation - Simple")
 
-import os
-base_url = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
+# MLflow tracking URI (for MLflow server)
+mlflow_tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
+print(f"Using MLflow Tracking URI: {mlflow_tracking_uri}")
+
+# Ollama base URL (for Ollama server)
+#ollama_base_url = "http://localhost:11434"
+ollama_base_url = os.getenv("OLLAMA_BASE_URI", "http://localhost:11434")
+print(f"Using Ollama Base URL: {ollama_base_url}")
 
 # Prepare data
 eval_data = pd.DataFrame({
@@ -51,7 +58,7 @@ for model_name in models_to_evaluate:
     
     try:
         # Initialize model and generate predictions
-        llm = OllamaLLM(model=model_name, base_url=base_url)
+        llm = OllamaLLM(model=model_name, base_url=ollama_base_url)
         
         print("Generating predictions...")
         predictions = []
@@ -164,3 +171,7 @@ if len(successful_models) > 0:
 else:
     print(f"\n{'='*80}")
     print("⚠️  No models completed successfully")
+    print(f"{'='*80}")
+
+print(f"\n🔗 View detailed results at: {mlflow_tracking_uri}")
+print(f"{'='*80}\n")
