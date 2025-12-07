@@ -46,8 +46,8 @@ echo $MLFLOW_TRACKING_URI
 # Or in Python
 python -c "import mlflow; print(mlflow.get_tracking_uri())"
 
-touch evaluate_ollama_prep.sh
-chmod +x evaluate_ollama_prep.sh
+touch prepare_ollama_evaluation.sh
+chmod +x prepare_ollama_evaluation.sh
 
 insert code
 
@@ -60,11 +60,105 @@ if ! command -v ollama &> /dev/null; then
     echo "Ollama not found. Installing Ollama..."
     curl -fsSL https://ollama.com/install.sh | sh
 else
-    echo "Ollama is already installed."
+    echo "Ollama is already installed. Checking version..."
+    
+    # Get current installed version
+    CURRENT_VERSION=$(ollama --version | grep -oP 'ollama version is \K[0-9.]+' || echo "0.0.0")
+    echo "Current version: $CURRENT_VERSION"
+    
+    # Get latest version from GitHub API
+    LATEST_VERSION=$(curl -s https://api.github.com/repos/ollama/ollama/releases/latest | grep -oP '"tag_name": "v\K[0-9.]+' || echo "999.999.999")
+    echo "Latest version: $LATEST_VERSION"
+    
+    # Compare versions and update if needed
+    if [ "$CURRENT_VERSION" != "$LATEST_VERSION" ]; then
+        echo "Updating Ollama from $CURRENT_VERSION to $LATEST_VERSION..."
+        curl -fsSL https://ollama.com/install.sh | sh
+    else
+        echo "Ollama is up to date."
+    fi
 fi
 
 # Install and start Ollama (if not already done)
+# ollama pull llama4
+# ollama pull llama3.3
 ollama pull llama3.2
+# ollama pull mistral
+# ollama pull dolphin3
+# ollama pull deepseek-r1
+# ollama pull deepseek-v3.1
+
 
 # Verify it's running
 ollama list
+
+---
+
+touch evaluate_ollama.py
+
+insert code:
+
+import mlflow
+import pandas as pd
+from langchain_community.llms import Ollama
+
+# Set experiment
+mlflow.set_experiment("Ollama Model Evaluation - LangChain")
+
+# Prepare data
+eval_data = pd.DataFrame({
+    "inputs": [
+        "What is MLflow?",
+        "What is the capital of France?",
+        "Explain machine learning in simple terms.",
+        "Write a Python function to calculate factorial.",
+    ],
+    "ground_truth": [
+        "MLflow is an open-source platform for managing the machine learning lifecycle.",
+        "Paris",
+        "Machine learning is a way for computers to learn patterns from data without being explicitly programmed.",
+        "A factorial function multiplies a number by all positive integers less than it.",
+    ]
+})
+
+# Initialize Ollama model
+llm = Ollama(model="llama3.2", base_url="http://localhost:11434")
+
+# Create wrapper for MLflow
+def ollama_langchain_model(inputs):
+    return [llm.invoke(prompt) for prompt in inputs["inputs"]]
+
+# Run evaluation
+with mlflow.start_run(run_name="llama3.2-langchain-eval"):
+    mlflow.log_param("model", "llama3.2")
+    mlflow.log_param("framework", "langchain")
+    
+    results = mlflow.evaluate(
+        model=ollama_langchain_model,
+        data=eval_data,
+        targets="ground_truth",
+        model_type="text",
+    )
+    
+    print(f"\nResults: {results.metrics}")
+    print(f"View at: http://localhost:5000")
+
+---
+
+
+
+touch evaluate_ollama.sh
+chmod +x evaluate_ollama.sh
+
+insert code:
+
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# Make sure MLFLOW_TRACKING_URI is set
+export MLFLOW_TRACKING_URI="http://localhost:5000"
+echo "MLFLOW_TRACKING_URI is set to $MLFLOW_TRACKING_URI"
+
+# Run the evaluation
+python evaluations/evaluate_ollama.py
