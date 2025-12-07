@@ -1,0 +1,70 @@
+python -m venv env
+source env/bin/activate
+(deactivate)
+
+pip install -r requirements.txt
+
+git clone --depth 1 --filter=blob:none --sparse https://github.com/mlflow/mlflow.git
+cd mlflow
+git sparse-checkout set docker-compose
+cd docker-compose
+docker compose up -d
+
+docker-compose config
+
+docker-compose logs -f mlflow
+
+cd ../../
+
+export MLFLOW_TRACKING_URI="http://localhost:5000"
+
+mkdir evaluations
+cd evaluations/
+touch evaluate_model.py
+
+insert the code:
+
+import mlflow
+# no need for mlflow.set_tracking_uri()
+# it reads from environment variable MLFLOW_TRACKING_URI
+
+with mlflow.start_run():
+    results = mlflow.evaluate(
+        model=your_model,
+        data=eval_data
+    )
+
+touch tracking_uri_test.sh
+chmod +x tracking_uri_test.sh
+
+
+insert code:
+
+# Check the variable is set
+echo $MLFLOW_TRACKING_URI
+
+# Or in Python
+python -c "import mlflow; print(mlflow.get_tracking_uri())"
+
+touch evaluate_ollama_prep.sh
+chmod +x evaluate_ollama_prep.sh
+
+insert code
+
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# Check if Ollama is installed, if not install it
+if ! command -v ollama &> /dev/null; then
+    echo "Ollama not found. Installing Ollama..."
+    curl -fsSL https://ollama.com/install.sh | sh
+else
+    echo "Ollama is already installed."
+fi
+
+# Install and start Ollama (if not already done)
+ollama pull llama3.2
+
+# Verify it's running
+ollama list
