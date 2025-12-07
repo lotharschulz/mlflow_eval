@@ -1,6 +1,7 @@
 python -m venv env
 source env/bin/activate
-(deactivate)
+
+tear down the virtual environment: deactivate
 
 pip install -r requirements.txt
 
@@ -13,6 +14,8 @@ docker compose up -d
 docker-compose config
 
 docker-compose logs -f mlflow
+
+stop the docker setup: docker-compose stop -v # removes all volumes that store data
 
 cd ../../
 
