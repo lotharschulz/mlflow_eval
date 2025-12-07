@@ -15,7 +15,7 @@ docker-compose config
 
 docker-compose logs -f mlflow
 
-stop the docker setup: docker-compose stop -v # removes all volumes that store data
+stop the docker setup: docker-compose down -v # removes all volumes that store data
 
 cd ../../
 
