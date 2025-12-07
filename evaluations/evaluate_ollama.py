@@ -6,6 +6,9 @@ from difflib import SequenceMatcher
 # Set experiment
 mlflow.set_experiment("Ollama Model Evaluation - Simple")
 
+import os
+base_url = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
+
 # Prepare data
 eval_data = pd.DataFrame({
     "question": [
@@ -48,7 +51,7 @@ for model_name in models_to_evaluate:
     
     try:
         # Initialize model and generate predictions
-        llm = OllamaLLM(model=model_name, base_url="http://localhost:11434")
+        llm = OllamaLLM(model=model_name, base_url=base_url)
         
         print("Generating predictions...")
         predictions = []
