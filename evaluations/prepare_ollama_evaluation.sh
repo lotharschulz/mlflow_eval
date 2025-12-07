@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Check if Ollama is installed, if not install it
+# Check if Ollama latest version is installed, if not install it
 if ! command -v ollama &> /dev/null; then
     echo "Ollama not found. Installing Ollama..."
     curl -fsSL https://ollama.com/install.sh | sh
@@ -26,14 +26,14 @@ else
     fi
 fi
 
-# Install and start Ollama (if not already done)
-# ollama pull llama4
-# ollama pull llama3.3
+# pull models
+ollama pull llama4
+ollama pull llama3.3
 ollama pull llama3.2
-# ollama pull mistral
-# ollama pull dolphin3
-# ollama pull deepseek-r1
-# ollama pull deepseek-v3.1
+ollama pull mistral
+ollama pull dolphin3
+ollama pull deepseek-r1
+ollama pull deepseek-v3.1
 
 
 # Verify it's running
