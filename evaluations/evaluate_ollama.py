@@ -40,6 +40,8 @@ eval_data = pd.DataFrame({
 # List of models to evaluate
 models_to_evaluate = [
     "llama3.2:latest",
+    "llama3.3:latest",
+    "llama4:latest",
     "mistral:latest",
     "dolphin3:latest",
     "deepscaler:latest",

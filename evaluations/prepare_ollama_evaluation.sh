@@ -37,7 +37,6 @@ ollama pull llama3.2
 ollama pull mistral
 ollama pull dolphin3
 ollama pull deepseek-r1
-ollama pull deepseek-v3.1
 
 # Verify it's running
 ollama list
