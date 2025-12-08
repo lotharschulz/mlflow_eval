@@ -38,6 +38,7 @@ git clone --depth 1 --filter=blob:none --sparse https://github.com/mlflow/mlflow
 cd mlflow
 git sparse-checkout set docker-compose
 cd docker-compose
+cp .env.dev.example .env
 ```
 
 Start the MLflow tracking server using Docker Compose:
