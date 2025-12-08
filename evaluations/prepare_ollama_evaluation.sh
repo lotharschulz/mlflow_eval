@@ -49,11 +49,15 @@ else
         # Compare versions and update if needed
         if [ "$CURRENT_VERSION" != "$LATEST_VERSION" ]; then
             echo "Updating Ollama from $CURRENT_VERSION to $LATEST_VERSION..."
-            if command -v brew &> /dev/null; then
+            if command -v brew &> /dev/null && brew list ollama &> /dev/null; then
+                # Ollama is installed via Homebrew
                 brew upgrade ollama
             else
-                echo "Please update Ollama manually from https://ollama.com/download/mac"
-                exit 1
+                # Ollama is installed as standalone - use the install script
+                echo "Downloading and running Ollama installer..."
+                curl -fsSL https://ollama.com/install.sh | sh
+                
+                echo "Ollama has been updated to $LATEST_VERSION"
             fi
         else
             echo "Ollama is up to date."
