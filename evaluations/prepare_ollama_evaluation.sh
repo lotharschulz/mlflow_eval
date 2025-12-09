@@ -92,9 +92,6 @@ fi
 # pull models
 echo "Pulling Ollama models..."
 
-#echo "pull llama3.3:70b ------------------------------------------------------"
-#ollama pull llama3.3:70b
-
 echo "pull llama3.2:3b ------------------------------------------------------"
 ollama pull llama3.2:3b
 
@@ -110,14 +107,8 @@ ollama pull dolphin3:8b
 echo "pull deepseek-r1:7b ------------------------------------------------------"
 ollama pull deepseek-r1:7b
 
-#echo "pull gemma3:27b ------------------------------------------------------"
-#ollama pull gemma3:27b
-
 echo "pull nomic-embed-text:v1.5 ------------------------------------------------------"
 ollama pull nomic-embed-text:v1.5
-
-#echo "pull llama4:16x17b ------------------------------------------------------"
-#ollama pull llama4:16x17b
 
 # Verify it's running
 ollama list

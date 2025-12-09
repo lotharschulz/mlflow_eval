@@ -39,15 +39,12 @@ eval_data = pd.DataFrame({
 
 # List of models to evaluate
 models_to_evaluate = [
-#    "llama3.3:70b",
     "llama3.2:3b",
     "llama3.2:1b",
     "mistral:7b",
     "dolphin3:8b",
     "deepseek-r1:7b",
-#    "gemma3:27b",
     "nomic-embed-text:v1.5"
-#    "llama4:16x17b"
 ]
 
 # Store results for final comparison
