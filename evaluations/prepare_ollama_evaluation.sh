@@ -107,8 +107,5 @@ ollama pull dolphin3:8b
 echo "pull deepseek-r1:7b ------------------------------------------------------"
 ollama pull deepseek-r1:7b
 
-echo "pull nomic-embed-text:v1.5 ------------------------------------------------------"
-ollama pull nomic-embed-text:v1.5
-
 # Verify it's running
 ollama list

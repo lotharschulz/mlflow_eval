@@ -43,8 +43,7 @@ models_to_evaluate = [
     "llama3.2:1b",
     "mistral:7b",
     "dolphin3:8b",
-    "deepseek-r1:7b",
-    "nomic-embed-text:v1.5"
+    "deepseek-r1:7b"
 ]
 
 # Store results for final comparison
