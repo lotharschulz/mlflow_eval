@@ -11,25 +11,7 @@ This project demonstrates how to evaluate multiple Ollama LLM models using MLflo
 
 ## Setup Instructions
 
-### 1. Create and Activate Virtual Environment
-
-```bash
-python -m venv env
-source env/bin/activate
-```
-
-To deactivate the virtual environment later:
-```bash
-deactivate
-```
-
-### 2. Install Python Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Set Up MLflow Tracking Server
+### 1. Set Up MLflow Tracking Server
 
 Clone the MLflow repository with sparse checkout to get only the docker-compose files:
 
@@ -58,10 +40,32 @@ To stop the Docker setup:
 docker-compose down -v  # The -v flag removes volumes storing data
 ```
 
+Go back to initial directory
+```bash
+cd ../../
+```
+
+### 2. Create and Activate Virtual Environment
+
+```bash
+python -m venv env
+source env/bin/activate
+```
+
+To deactivate the virtual environment later:
+```bash
+deactivate
+```
+
+### 3. Install Python Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
 ### 4. Configure Environment Variables
 
 ```bash
-cd ../../
 export MLFLOW_TRACKING_URI="http://localhost:5000"
 echo $MLFLOW_TRACKING_URI
 
@@ -71,11 +75,10 @@ echo $OLLAMA_BASE_URI
 
 ### 5. Prepare Ollama Models
 
-Navigate to the evaluations directory and run the preparation script:
+Run the preparation script:
 
 ```bash
-cd evaluations/
-./prepare_ollama_evaluation.sh
+./evaluations/prepare_ollama_evaluation.sh
 ```
 
 This script will:
@@ -88,13 +91,14 @@ This script will:
 ### Test Tracking URI
 
 ```bash
-./tracking_uri_test.sh
+./evaluations/tracking_uri_test.sh
 ```
 
 ### Run Model Evaluation
 
 ```bash
-./evaluate_ollama.sh
+# please check if the python virtual environment is still active
+./evaluations/evaluate_ollama.sh
 ```
 
 ## Evaluation Metrics

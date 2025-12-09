@@ -53,9 +53,17 @@ else
                 # Ollama is installed via Homebrew
                 brew upgrade ollama
             else
-                # Ollama is installed as standalone - use the install script
-                echo "Downloading and running Ollama installer..."
-                curl -fsSL https://ollama.com/install.sh | sh
+                # Ollama is installed as standalone app - download and install the update
+                echo "Downloading Ollama update..."
+                TEMP_ZIP="/tmp/Ollama-darwin.zip"
+                curl -L -o "$TEMP_ZIP" "https://ollama.com/download/Ollama-darwin.zip"
+
+                echo "Installing update..."
+                # Extract to /Applications
+                unzip -o "$TEMP_ZIP" -d /Applications
+
+                # Clean up
+                rm "$TEMP_ZIP"
                 
                 echo "Ollama has been updated to $LATEST_VERSION"
             fi
@@ -82,12 +90,34 @@ else
 fi
 
 # pull models
-ollama pull llama4
-ollama pull llama3.3
-ollama pull llama3.2
-ollama pull mistral
-ollama pull dolphin3
-ollama pull deepseek-r1
+echo "Pulling Ollama models..."
+
+#echo "pull llama3.3:70b ------------------------------------------------------"
+#ollama pull llama3.3:70b
+
+echo "pull llama3.2:3b ------------------------------------------------------"
+ollama pull llama3.2:3b
+
+echo "pull llama3.2:1b ------------------------------------------------------"
+ollama pull llama3.2:1b
+
+echo "pull mistral:7b ------------------------------------------------------"
+ollama pull mistral:7b
+
+echo "pull dolphin3:8b ------------------------------------------------------"
+ollama pull dolphin3:8b
+
+echo "pull deepseek-r1:7b ------------------------------------------------------"
+ollama pull deepseek-r1:7b
+
+#echo "pull gemma3:27b ------------------------------------------------------"
+#ollama pull gemma3:27b
+
+echo "pull nomic-embed-text:v1.5 ------------------------------------------------------"
+ollama pull nomic-embed-text:v1.5
+
+#echo "pull llama4:16x17b ------------------------------------------------------"
+#ollama pull llama4:16x17b
 
 # Verify it's running
 ollama list
